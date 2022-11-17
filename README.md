@@ -1,14 +1,14 @@
 # Challenge Mobdev
 
-📦  #### Run Locally ####📦
+📦  #### Run Locally ####  📦
                                                               
 1- ## Clone repo🚀
 
     $ git clone https://github.com/mselmank/Mobdev.git
  
-3- ## Run Frontend🚀          
+2- ## Run Frontend🚀          
           
-        # open new terminal
+        # open new terminal (in Vscode ctrl + shift + ~)
         $ npm i
         $ npm run dev  
                   
