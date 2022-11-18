@@ -1,36 +1,34 @@
 import * as React from "react";
-import Typography from "@mui/material/Typography";
-import { styled } from "@mui/material/styles";
-import { Grid, Paper } from "@mui/material";
+import { Card, CardMedia } from "@mui/material";
 import { Box } from "@mui/system";
 
-const CardDogVDos = ({ titles }) => {
-  const Item = styled(Paper)(({ theme }) => ({
-    ...theme.typography.body2,
-    padding: theme.spacing(5),
-    textAlign: "center",
-    color: theme.palette.text.secondary,
-  }));
-
+const OneImage = ({ dataBreed, BreedName }) => {
   return (
-    <Box>
-      <Grid
-        container
-        direction="row"
-        justifyContent="flex-start"
-        alignItems="flex-start"
-        rowSpacing={3}
-        display="contents"
+    <Box sx={{}}>
+      <Card
+        sx={{
+          maxWidth: 345,
+          m: 1,
+          p: 4,
+          border: 2,
+          boxShadow: 5,
+          borderRight: 10,
+          borderBottom: 10,
+          borderBottomRightRadius: 15,
+          borderTopRightRadius: 15,
+          borderBottomLeftRadius: 15,
+          borderTopLeftRadius: 15,
+        }}
       >
-        <Grid item xs={3}>
-          {/* <pre>{JSON.stringify(data, null, 2)}</pre> */}
-          <Item style={{ minHeight: "300px" }}>
-            <Typography>{titles}</Typography>
-          </Item>
-        </Grid>
-      </Grid>
+        <CardMedia
+          component="img"
+          height="auto"
+          image={dataBreed}
+          alt={dataBreed}
+        />
+      </Card>
     </Box>
   );
 };
 
-export default CardDogVDos;
+export default OneImage;

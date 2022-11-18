@@ -1,21 +1,55 @@
-import { Grid } from "@mui/material";
+import React, { useEffect, useState } from "react";
 import { Box } from "@mui/system";
-import { useState } from "react";
-import "./App.css";
-import CardDog from "./components/Card";
-import CardDogVDos from "./components/CardV2";
 import MyNavbar from "./components/Navbar";
+import { TextField } from "@mui/material";
+import OneImage from "./components/CardV2";
+import "./App.css";
 
 function App() {
-  const [names, setNames] = useState(["titulo 1", "titulo 2", "titulo 3"]);
+  const [inputBreed, setInputBreed] = useState("dachshund");
+  const [breeds, setBreeds] = useState([]);
+
+  const GetDataByBreed = () => {
+    useEffect(() => {
+      const dataFetch = async () => {
+        const url = `https://dog.ceo/api/breed/${inputBreed}/images`;
+        const resp = await fetch(url);
+        const data = await resp.json();
+        setBreeds(data.message);
+      };
+
+      dataFetch();
+    }, []);
+  };
+  GetDataByBreed();
+  console.log("Breed:", breeds);
 
   return (
     <div className="App">
       <MyNavbar />
+      {/*   {<pre>{JSON.stringify(breeds, null, 2)}</pre>} */}
+      <Box sx={{ m: 5, p: 5 }}>
+        <TextField
+          fullWidth
+          id="outlined-basic"
+          label="Search by breed"
+          variant="outlined"
+        ></TextField>
+      </Box>
 
-      {names.map((name) => (
-        <CardDogVDos titles={name} key={name.id} />
-      ))}
+      <Box
+        sx={{
+          flexWrap: "wrap",
+          display: "flex",
+          p: 4,
+          m: 4,
+          maxWidth: "auto",
+        }}
+      >
+        {breeds.map((breed) => (
+          <OneImage dataBreed={breed} key={breed.id} BreedName={inputBreed} />
+        ))}
+      </Box>
     </div>
   );
 }
