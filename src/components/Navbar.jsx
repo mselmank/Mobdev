@@ -6,9 +6,9 @@ import DogComponent from "../assets/Icon";
 
 const MyNavbar = () => {
   return (
-    <AppBar sx={{ bgcolor: "black", borderRadius: 2 }} position="static">
+    <AppBar sx={{ bgcolor: "white", borderRadius: 2 }} position="static">
       <Container maxWidth="xl">
-        <Toolbar disableGutters>{/*       <DogComponent /> */}</Toolbar>
+        <Toolbar disableGutters>{<DogComponent />}</Toolbar>
       </Container>
     </AppBar>
   );

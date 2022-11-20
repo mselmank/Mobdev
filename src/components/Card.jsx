@@ -1,8 +1,8 @@
 import * as React from "react";
-import { Card, CardMedia } from "@mui/material";
+import { Card, CardMedia, Typography } from "@mui/material";
 import { Box } from "@mui/system";
 
-const OneImage = ({ dataBreed, BreedName }) => {
+const OneImage = ({ dataBreed }) => {
   return (
     <Box sx={{}}>
       <Card
