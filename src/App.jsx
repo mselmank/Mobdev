@@ -6,7 +6,7 @@ import OneImage from "./components/Card";
 import "./App.css";
 import SearchBreed from "./components/SearchBreed";
 import Pill from "./components/Pill";
-import { Alert, Typography } from "@mui/material";
+import { Alert, Link, Typography } from "@mui/material";
 
 function App() {
   const [inputBreed, setInputBreed] = useState("");
@@ -76,9 +76,14 @@ function App() {
             HandleSubBreed={HandleSubBreed}
           />
         ) : (
-          <Alert severity="error" color="warning">
-            Ingresa bien el nombre de la raza
-          </Alert>
+          <Box sx={{ mt: 4 }}>
+            <Alert severity="error" color="warning">
+              Ingresa bien el nombre de la raza
+            </Alert>
+            <Link href="/">
+              <Typography>Volver</Typography>
+            </Link>
+          </Box>
         )}
       </Box>
       {/* 
