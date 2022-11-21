@@ -2,23 +2,10 @@ import React, { useEffect, useState } from "react";
 import { Box } from "@mui/system";
 import MyNavbar from "./components/Navbar";
 import OneImage from "./components/Card";
-import DoneIcon from "@mui/icons-material/Done";
-import DeleteIcon from "@mui/icons-material/Delete";
-
 import "./App.css";
 import SearchBreed from "./components/SearchBreed";
 
-import {
-  Alert,
-  Avatar,
-  Chip,
-  Link,
-  ListItem,
-  Paper,
-  Stack,
-  Typography,
-} from "@mui/material";
-import styled from "@emotion/styled";
+import { Alert, Button, Link, Stack, Typography } from "@mui/material";
 
 function App() {
   const [inputBreed, setInputBreed] = useState("");
@@ -27,21 +14,11 @@ function App() {
   const [breeds, setBreeds] = useState([]);
   const [subBreeds, setSubBreeds] = useState([]);
   const [showError, setShowError] = useState(false);
-  const Item = styled(Paper)(() => ({
-    height: "25px",
-    width: "100px",
-    font: "message-box",
-    fontWeight: "bold",
-    textAlign: "center",
-    backgroundColor: "#FEFCE8",
-    color: "black",
-  }));
-  const handleClick = () => {
-    console.info("You clicked the Chip.");
-  };
 
-  const handleDelete = () => {
-    console.info("You clicked the delete icon.");
+  const handleClick = ({ target }) => {
+    const str = target.value;
+    setInputSubBreed(str);
+    fetchImagesByBreed(inputBreed, inputSubBreed);
   };
 
   //⁡⁢⁣⁣𝗳𝗲𝘁𝗰𝗵 𝗮𝗹𝗹 𝗹𝗶𝘀𝘁⁡
@@ -77,6 +54,29 @@ function App() {
     const data = await resp.json();
     setSubBreeds(data.message);
   };
+  //⁡⁢⁣⁣⁡⁢⁣⁣⁡⁢⁣⁣𝗳𝗲𝘁𝗰𝗵 𝗯𝘆 𝘀𝘂𝗯𝗕𝗿𝗲𝗲𝗱 𝗿𝗲𝘁𝘂𝗿𝗻𝘀 𝗮𝗹𝗹 𝗶𝗺𝗮𝗴𝗲𝘀 𝗳𝗿𝗼𝗺 𝘀𝘂𝗯-𝗯𝗿𝗲𝗲𝗱
+  const fetchImagesByBreed = async (inputBreed, item) => {
+    const url = `https://dog.ceo/api/breed/${inputBreed}/${item}/images`;
+    const resp = await fetch(url);
+    if (!resp.ok) {
+      throw new Error(`HTTP error! status: ${resp.status}`);
+    }
+    const data = await resp.json();
+    setImages(data.message);
+  };
+
+  /*   const arrayDataFetch = async (arr) => {
+    const url = arr.map((item) => {
+      `https://dog.ceo/api/breed/${inputBreed}/${item}/images`;
+    });
+    const resp = await fetch(url);
+    if (!resp.ok) {
+      throw new Error(`HTTP error! status: ${resp.status}`);
+    }
+    const data = await resp.json();
+    setImages(data);
+  }; */
+
   const HandleChange = (inputBreed) => {
     if (allBreeds.includes(inputBreed.toLocaleLowerCase())) {
       setInputBreed(inputBreed.toLocaleLowerCase());
@@ -87,10 +87,7 @@ function App() {
     }
   };
   const HandleSubBreed = (inputSubBreed) => {
-    if (inputSubBreed.length >= 2) {
-      setInputSubBreed(inputSubBreed.toLocaleLowerCase());
-      dataFetchByBreed(inputSubBreed.toLocaleLowerCase());
-    }
+    dataFetchByBreed(inputSubBreed.toLocaleLowerCase());
   };
 
   useEffect(() => {
@@ -101,7 +98,6 @@ function App() {
     <div className="App">
       <MyNavbar />
       {/*    {<pre>{JSON.stringify(allBreeds, null, 2)}</pre>} */}
-
       {/*   {<pre>{JSON.stringify(breeds, null, 2)}</pre>} */}
 
       <Box>
@@ -122,23 +118,13 @@ function App() {
         )}
       </Box>
 
-      <Stack
-        direction="row"
-        justifyContent="center"
-        alignItems="center"
-        spacing={3}
-        mt={8}
-      >
+      <Stack direction="row" justifyContent="center" alignItems="center" mt={4}>
         {subBreeds &&
           subBreeds.map((name, index) => {
             return (
-              <Chip
-                label={name}
-                onClick={handleClick}
-                onDelete={handleDelete}
-                deleteIcon={<DoneIcon />}
-                key={index}
-              ></Chip>
+              <Button onClick={handleClick} value={name} key={index}>
+                {name}
+              </Button>
             );
           })}
       </Stack>
@@ -151,14 +137,15 @@ function App() {
           maxWidth: "auto",
         }}
       >
-        {breeds.map((breed, index) => (
-          <OneImage
-            dataBreed={breed}
-            key={index}
-            breedName={inputBreed}
-            subBreedName={breed}
-          />
-        ))}
+        {breeds &&
+          breeds.map((breed, index) => (
+            <OneImage
+              dataBreed={breed}
+              key={index}
+              breedName={inputBreed}
+              subBreedName={breed}
+            />
+          ))}
       </Box>
     </div>
   );
