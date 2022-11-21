@@ -8,7 +8,7 @@
  
 2- ## Run Frontend🚀          
           
-        # open new terminal (in Vscode ctrl + shift + ~)
+        # open new terminal
         $ npm i
         $ npm run dev  
                   
@@ -21,7 +21,7 @@
 * [HTML5 and CSS3]: component library Material UI.
 * [React]:Components, Props, Events, Hooks.
 * [Development]: ESLint,Babel,Git,Github.
-* [Deployment]: 
+* [Deployment]: Vercel
   
 
 ## Versioned 📌
