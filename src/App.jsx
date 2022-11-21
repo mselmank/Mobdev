@@ -20,18 +20,22 @@ function App() {
   const allDataFetch = async () => {
     const url = `https://dog.ceo/api/breeds/list/all`;
     const resp = await fetch(url);
+    if (!resp.ok) {
+      throw new Error(`HTTP error! status: ${resp.status}`);
+    }
     const data = await resp.json();
     const copy = JSON.parse(JSON.stringify(data.message));
     const aux = Object.keys(copy);
     setAllBreeds(aux);
-    /*     console.log("copy", aux);
-    console.log("allBreeds", allBreeds); */
   };
 
   //⁡⁢⁣⁣𝗳𝗲𝘁𝗰𝗵 𝗯𝘆 𝗯𝗿𝗲𝗲𝗱⁡
   const dataFetch = async (inputBreed) => {
     const url = `https://dog.ceo/api/breed/${inputBreed}/images`;
     const resp = await fetch(url);
+    if (!resp.ok) {
+      throw new Error(`HTTP error! status: ${resp.status}`);
+    }
     const data = await resp.json();
     setBreeds(data.message);
   };
@@ -39,6 +43,9 @@ function App() {
   const dataFetchByBreed = async (inputSubBreed) => {
     const url = `https://dog.ceo/api/breed/${inputSubBreed}/list`;
     const resp = await fetch(url);
+    if (!resp.ok) {
+      throw new Error(`HTTP error! status: ${resp.status}`);
+    }
     const data = await resp.json();
     setSubBreeds(data.message);
   };
@@ -86,7 +93,7 @@ function App() {
           </Box>
         )}
       </Box>
-      {/* 
+
       <Box>
         {subBreeds.map((name, index) => {
           {
@@ -97,7 +104,7 @@ function App() {
             <Pill subBreedName={name} key={index} breedName={inputBreed} />;
           }
         })}
-      </Box> */}
+      </Box>
       <Box
         sx={{
           flexWrap: "wrap",
