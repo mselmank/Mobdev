@@ -1,3 +1,4 @@
+import styled from "@emotion/styled";
 import { Button, Stack, TextField } from "@mui/material";
 import { Box } from "@mui/system";
 import React, { useState } from "react";
@@ -5,6 +6,10 @@ import Search from "../assets/Search";
 
 const SearchBreed = ({ HandleChange, HandleSubBreed }) => {
   const [inputValue, setInpuntValue] = useState("");
+  const ColorButton = styled(Button)(() => ({
+    color: "black",
+    backgroundColor: "gray",
+  }));
 
   const onInputChange = ({ target }) => {
     setInpuntValue(target.value);
@@ -22,7 +27,7 @@ const SearchBreed = ({ HandleChange, HandleSubBreed }) => {
         direction="column"
         justifyContent="center"
         alignItems="center"
-        spacing={0.5}
+        spacing={2}
         mt={8}
       >
         <TextField
@@ -33,9 +38,9 @@ const SearchBreed = ({ HandleChange, HandleSubBreed }) => {
           value={inputValue}
         ></TextField>
         <Box sx={{ mt: 2, ml: 1 }}>
-          <Button type="submit" variant="contained">
+          <ColorButton type="submit" variant="contained">
             <Search />
-          </Button>
+          </ColorButton>
         </Box>
       </Stack>
     </form>

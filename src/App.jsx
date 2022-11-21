@@ -2,11 +2,23 @@ import React, { useEffect, useState } from "react";
 import { Box } from "@mui/system";
 import MyNavbar from "./components/Navbar";
 import OneImage from "./components/Card";
+import DoneIcon from "@mui/icons-material/Done";
+import DeleteIcon from "@mui/icons-material/Delete";
 
 import "./App.css";
 import SearchBreed from "./components/SearchBreed";
-import Pill from "./components/Pill";
-import { Alert, Link, Typography } from "@mui/material";
+
+import {
+  Alert,
+  Avatar,
+  Chip,
+  Link,
+  ListItem,
+  Paper,
+  Stack,
+  Typography,
+} from "@mui/material";
+import styled from "@emotion/styled";
 
 function App() {
   const [inputBreed, setInputBreed] = useState("");
@@ -15,6 +27,22 @@ function App() {
   const [breeds, setBreeds] = useState([]);
   const [subBreeds, setSubBreeds] = useState([]);
   const [showError, setShowError] = useState(false);
+  const Item = styled(Paper)(() => ({
+    height: "25px",
+    width: "100px",
+    font: "message-box",
+    fontWeight: "bold",
+    textAlign: "center",
+    backgroundColor: "#FEFCE8",
+    color: "black",
+  }));
+  const handleClick = () => {
+    console.info("You clicked the Chip.");
+  };
+
+  const handleDelete = () => {
+    console.info("You clicked the delete icon.");
+  };
 
   //⁡⁢⁣⁣𝗳𝗲𝘁𝗰𝗵 𝗮𝗹𝗹 𝗹𝗶𝘀𝘁⁡
   const allDataFetch = async () => {
@@ -94,17 +122,26 @@ function App() {
         )}
       </Box>
 
-      <Box>
-        {subBreeds.map((name, index) => {
-          {
-            {
-              console.log("name:", name);
-            }
-            <Typography key={index}>{name}</Typography>;
-            <Pill subBreedName={name} key={index} breedName={inputBreed} />;
-          }
-        })}
-      </Box>
+      <Stack
+        direction="row"
+        justifyContent="center"
+        alignItems="center"
+        spacing={3}
+        mt={8}
+      >
+        {subBreeds &&
+          subBreeds.map((name, index) => {
+            return (
+              <Chip
+                label={name}
+                onClick={handleClick}
+                onDelete={handleDelete}
+                deleteIcon={<DoneIcon />}
+                key={index}
+              ></Chip>
+            );
+          })}
+      </Stack>
       <Box
         sx={{
           flexWrap: "wrap",
@@ -119,7 +156,7 @@ function App() {
             dataBreed={breed}
             key={index}
             breedName={inputBreed}
-            subBreedName={name}
+            subBreedName={breed}
           />
         ))}
       </Box>
