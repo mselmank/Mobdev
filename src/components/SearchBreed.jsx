@@ -1,7 +1,6 @@
-import { Button, IconButton, Stack, TextField } from "@mui/material";
+import { Button, Stack, TextField } from "@mui/material";
 import { Box } from "@mui/system";
 import React, { useState } from "react";
-import { SearchOutlinedIcon as SearchIcon } from "@mui/icons-material/SearchOutlined";
 import Search from "../assets/Search";
 
 const SearchBreed = ({ HandleChange, HandleSubBreed }) => {
@@ -13,8 +12,8 @@ const SearchBreed = ({ HandleChange, HandleSubBreed }) => {
 
   const onSubmit = (e) => {
     e.preventDefault();
-    HandleChange(inputValue);
-    HandleSubBreed(inputValue);
+    HandleChange(inputValue.toLocaleLowerCase());
+    HandleSubBreed(inputValue.toLocaleLowerCase());
   };
 
   return (

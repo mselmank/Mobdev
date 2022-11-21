@@ -1,4 +1,4 @@
-import React, { useState } from "react";
+import React, { useEffect, useState } from "react";
 import { Box } from "@mui/system";
 import MyNavbar from "./components/Navbar";
 import OneImage from "./components/Card";
@@ -6,13 +6,27 @@ import OneImage from "./components/Card";
 import "./App.css";
 import SearchBreed from "./components/SearchBreed";
 import Pill from "./components/Pill";
-import { Typography } from "@mui/material";
+import { Alert, Typography } from "@mui/material";
 
 function App() {
-  const [inputBreed, setInputBreed] = useState("pug");
+  const [inputBreed, setInputBreed] = useState("");
   const [inputSubBreed, setInputSubBreed] = useState("");
+  const [allBreeds, setAllBreeds] = useState([]);
   const [breeds, setBreeds] = useState([]);
   const [subBreeds, setSubBreeds] = useState([]);
+  const [showError, setShowError] = useState(false);
+
+  //⁡⁢⁣⁣𝗳𝗲𝘁𝗰𝗵 𝗮𝗹𝗹 𝗹𝗶𝘀𝘁⁡
+  const allDataFetch = async () => {
+    const url = `https://dog.ceo/api/breeds/list/all`;
+    const resp = await fetch(url);
+    const data = await resp.json();
+    const copy = JSON.parse(JSON.stringify(data.message));
+    const aux = Object.keys(copy);
+    setAllBreeds(aux);
+    /*     console.log("copy", aux);
+    console.log("allBreeds", allBreeds); */
+  };
 
   //⁡⁢⁣⁣𝗳𝗲𝘁𝗰𝗵 𝗯𝘆 𝗯𝗿𝗲𝗲𝗱⁡
   const dataFetch = async (inputBreed) => {
@@ -27,29 +41,47 @@ function App() {
     const resp = await fetch(url);
     const data = await resp.json();
     setSubBreeds(data.message);
-    console.log("subBreeds", subBreeds);
   };
-
-  const HandleSubBreed = (inputSubBreed) => {
-    setInputSubBreed(inputSubBreed);
-    dataFetchByBreed(inputSubBreed);
-  };
-
   const HandleChange = (inputBreed) => {
-    setInputBreed(inputBreed);
-    dataFetch(inputBreed);
+    if (allBreeds.includes(inputBreed.toLocaleLowerCase())) {
+      setInputBreed(inputBreed.toLocaleLowerCase());
+      dataFetch(inputBreed.toLocaleLowerCase());
+    } else {
+      setInputBreed("");
+      setShowError(true);
+    }
   };
+  const HandleSubBreed = (inputSubBreed) => {
+    if (inputSubBreed.length >= 2) {
+      setInputSubBreed(inputSubBreed.toLocaleLowerCase());
+      dataFetchByBreed(inputSubBreed.toLocaleLowerCase());
+    }
+  };
+
+  useEffect(() => {
+    allDataFetch();
+  }, []);
 
   return (
     <div className="App">
       <MyNavbar />
+      {/*    {<pre>{JSON.stringify(allBreeds, null, 2)}</pre>} */}
+
       {/*   {<pre>{JSON.stringify(breeds, null, 2)}</pre>} */}
+
       <Box>
-        <SearchBreed
-          HandleChange={HandleChange}
-          HandleSubBreed={HandleSubBreed}
-        />
+        {showError !== true ? (
+          <SearchBreed
+            HandleChange={HandleChange}
+            HandleSubBreed={HandleSubBreed}
+          />
+        ) : (
+          <Alert severity="error" color="warning">
+            Ingresa bien el nombre de la raza
+          </Alert>
+        )}
       </Box>
+      {/* 
       <Box>
         {subBreeds.map((name, index) => {
           {
@@ -60,7 +92,7 @@ function App() {
             <Pill subBreedName={name} key={index} breedName={inputBreed} />;
           }
         })}
-      </Box>
+      </Box> */}
       <Box
         sx={{
           flexWrap: "wrap",
