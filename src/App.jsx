@@ -55,8 +55,8 @@ function App() {
     setSubBreeds(data.message);
   };
   //⁡⁢⁣⁣⁡⁢⁣⁣⁡⁢⁣⁣𝗳𝗲𝘁𝗰𝗵 𝗯𝘆 𝘀𝘂𝗯𝗕𝗿𝗲𝗲𝗱 𝗿𝗲𝘁𝘂𝗿𝗻𝘀 𝗮𝗹𝗹 𝗶𝗺𝗮𝗴𝗲𝘀 𝗳𝗿𝗼𝗺 𝘀𝘂𝗯-𝗯𝗿𝗲𝗲𝗱
-  const fetchImagesByBreed = async (inputBreed, item) => {
-    const url = `https://dog.ceo/api/breed/${inputBreed}/${item}/images`;
+  const fetchImagesByBreed = async (inputBreed, inputSubBreed) => {
+    const url = `https://dog.ceo/api/breed/${inputBreed}/${inputSubBreed}/images`;
     const resp = await fetch(url);
     if (!resp.ok) {
       throw new Error(`HTTP error! status: ${resp.status}`);
