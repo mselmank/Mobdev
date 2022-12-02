@@ -5,7 +5,15 @@ import OneImage from "./components/Card";
 import "./App.css";
 import SearchBreed from "./components/SearchBreed";
 
-import { Alert, Button, Link, Stack, Typography } from "@mui/material";
+import {
+  Alert,
+  Button,
+  Card,
+  CardMedia,
+  Link,
+  Stack,
+  Typography,
+} from "@mui/material";
 
 function App() {
   const [inputBreed, setInputBreed] = useState("");
@@ -14,11 +22,15 @@ function App() {
   const [breeds, setBreeds] = useState([]);
   const [subBreeds, setSubBreeds] = useState([]);
   const [showError, setShowError] = useState(false);
+  const [images, setImages] = useState([]);
+  const [showSubBreeds, setShowSubBreeds] = useState(true);
 
-  const handleClick = ({ target }) => {
-    const str = target.value;
-    setInputSubBreed(str);
-    fetchImagesByBreed(inputBreed, inputSubBreed);
+  const handleClick = (e) => {
+    const str = e.target.value;
+    console.log("str", str);
+    /* setInputSubBreed(str); */
+    fetchImagesByBreed(inputBreed, str);
+    setShowSubBreeds(false);
   };
 
   //⁡⁢⁣⁣𝗳𝗲𝘁𝗰𝗵 𝗮𝗹𝗹 𝗹𝗶𝘀𝘁⁡
@@ -43,7 +55,9 @@ function App() {
     }
     const data = await resp.json();
     setBreeds(data.message);
+    console.log("breeds", breeds);
   };
+
   //⁡⁢⁣⁣𝗳𝗲𝘁𝗰𝗵 𝗯𝘆 𝘀𝘂𝗯𝗕𝗿𝗲𝗲𝗱⁡
   const dataFetchByBreed = async (inputSubBreed) => {
     const url = `https://dog.ceo/api/breed/${inputSubBreed}/list`;
@@ -58,13 +72,14 @@ function App() {
   const fetchImagesByBreed = async (inputBreed, inputSubBreed) => {
     const url = `https://dog.ceo/api/breed/${inputBreed}/${inputSubBreed}/images`;
     const resp = await fetch(url);
+
     if (!resp.ok) {
       throw new Error(`HTTP error! status: ${resp.status}`);
     }
     const data = await resp.json();
     setImages(data.message);
+    console.log("images", images);
   };
-
   /*   const arrayDataFetch = async (arr) => {
     const url = arr.map((item) => {
       `https://dog.ceo/api/breed/${inputBreed}/${item}/images`;
@@ -81,6 +96,7 @@ function App() {
     if (allBreeds.includes(inputBreed.toLocaleLowerCase())) {
       setInputBreed(inputBreed.toLocaleLowerCase());
       dataFetch(inputBreed.toLocaleLowerCase());
+      setShowSubBreeds(true);
     } else {
       setInputBreed("");
       setShowError(true);
@@ -99,7 +115,6 @@ function App() {
       <MyNavbar />
       {/*    {<pre>{JSON.stringify(allBreeds, null, 2)}</pre>} */}
       {/*   {<pre>{JSON.stringify(breeds, null, 2)}</pre>} */}
-
       <Box>
         {showError !== true ? (
           <SearchBreed
@@ -122,7 +137,7 @@ function App() {
         {subBreeds &&
           subBreeds.map((name, index) => {
             return (
-              <Button onClick={handleClick} value={name} key={index}>
+              <Button onClick={(e) => handleClick(e)} value={name} key={index}>
                 {name}
               </Button>
             );
@@ -137,15 +152,52 @@ function App() {
           maxWidth: "auto",
         }}
       >
-        {breeds &&
-          breeds.map((breed, index) => (
-            <OneImage
-              dataBreed={breed}
-              key={index}
-              breedName={inputBreed}
-              subBreedName={breed}
-            />
-          ))}
+        {/* Quizas hacer un operador ternario para dataBreed que sea dinamico. */}
+        {showSubBreeds === true
+          ? breeds &&
+            breeds.map((breed, index) => (
+              <OneImage
+                dataBreed={breed}
+                key={index}
+                breedName={inputBreed}
+                subBreedName={breed}
+              />
+            ))
+          : images &&
+            images.map((image, index) => (
+              /*      <OneImage
+                dataSubBreed={image}
+                key={index}
+                breedName={inputBreed}
+                subBreedName={image}
+              />; */
+
+              <Box sx={{}}>
+                <Card
+                  sx={{
+                    maxWidth: 345,
+                    m: 1,
+                    p: 4,
+                    border: 2,
+                    boxShadow: 5,
+                    borderRight: 10,
+                    borderBottom: 10,
+                    borderBottomRightRadius: 15,
+                    borderTopRightRadius: 15,
+                    borderBottomLeftRadius: 15,
+                    borderTopLeftRadius: 15,
+                  }}
+                >
+                  <CardMedia
+                    component="img"
+                    key={index}
+                    height="auto"
+                    image={image}
+                    alt={image}
+                  />
+                </Card>
+              </Box>
+            ))}
       </Box>
     </div>
   );
