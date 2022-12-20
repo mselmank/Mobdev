@@ -1,21 +1,24 @@
-import react, { useEffect, useState } from "react";
+import { useEffect, useState } from "react";
+import { getImages } from "../helpers/getImages";
 
 const useFetch = () => {
-  const [dogs, setDogs] = useState([]);
-  console.log("Datos", dogs);
+  const [images, setImages] = useState([]);
+  const [isLoading, setIsLoading] = useState(true);
+
+  // fetch data
+  const dataFetch = async () => {
+    const newImages = await getImages();
+    setImages(newImages);
+    setIsLoading(false);
+  };
+
   useEffect(() => {
-    // fetch data
-    const dataFetch = async () => {
-      const data = await (
-        await fetch(`https://dog.ceo/api/breeds/list/all`)
-      ).json();
-
-      // set state when the data received
-      setDogs(data);
-    };
-
     dataFetch();
   }, []);
+  return {
+    images,
+    isLoading,
+  };
 };
 
 export default useFetch;
